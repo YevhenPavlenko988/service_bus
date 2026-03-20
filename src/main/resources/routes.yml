@@ -1,0 +1,28 @@
+gateway:
+  routes:
+
+    - prefix: /auth
+      target: ${AUTH_SERVICE_URL:http://localhost:8080}
+      rules:
+        - methods: [POST]
+          paths: [/auth, /auth/password, /auth/change-password]
+          public: true
+        - methods: ["*"]
+          paths: [/**]
+          roles: [ADMIN, MANAGER, TEACHER, USER]
+
+    - prefix: /users
+      target: ${AUTH_SERVICE_URL:http://localhost:8080}
+      rules:
+        - methods: [GET]
+          paths: [/users]
+          roles: [ADMIN, MANAGER, TEACHER]
+        - methods: [POST]
+          paths: [/users]
+          roles: [ADMIN, MANAGER, TEACHER]
+        - methods: [POST]
+          paths: ["/users/*/reset-password"]
+          roles: [ADMIN, MANAGER, TEACHER]
+        - methods: [PATCH]
+          paths: ["/users/*/assign"]
+          roles: [ADMIN]

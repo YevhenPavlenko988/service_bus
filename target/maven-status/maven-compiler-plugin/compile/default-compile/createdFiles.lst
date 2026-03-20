@@ -1,0 +1,9 @@
+META-INF/spring-configuration-metadata.json
+com/github/yevhen/servicebus/config/GatewayProperties.class
+com/github/yevhen/servicebus/config/RestClientConfig$1.class
+com/github/yevhen/servicebus/proxy/ProxyController.class
+com/github/yevhen/servicebus/model/RouteDefinition.class
+com/github/yevhen/servicebus/config/RestClientConfig.class
+com/github/yevhen/servicebus/security/PermissionEvaluator.class
+com/github/yevhen/servicebus/model/RuleDefinition.class
+com/github/yevhen/servicebus/ServiceBusApplication.class
