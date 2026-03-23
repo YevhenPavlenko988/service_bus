@@ -3,6 +3,7 @@ package com.github.yevhen.servicebus.proxy;
 import com.github.yevhen.common.exception.ServiceException;
 import com.github.yevhen.servicebus.model.RouteDefinition;
 import com.github.yevhen.servicebus.security.PermissionEvaluator;
+import java.net.URI;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,9 +63,10 @@ public class ProxyController {
     private ResponseEntity<byte[]> forward(String method, String targetUrl,
                                            HttpHeaders headers, byte[] body) {
         try {
+            // Use URI.create() to preserve existing percent-encoding without double-encoding
             var spec = restClient
                     .method(HttpMethod.valueOf(method))
-                    .uri(targetUrl)
+                    .uri(URI.create(targetUrl))
                     .headers(h -> h.addAll(headers));
 
             if (body != null && body.length > 0) {

@@ -11,6 +11,26 @@ gateway:
           paths: [/**]
           roles: [ADMIN, MANAGER, TEACHER, USER]
 
+    - prefix: /google
+      target: ${GOOGLE_SERVICE_URL:http://localhost:8082}
+      rules:
+        - methods: [GET]
+          paths: [/google/auth, /google/auth/callback, /google/calendar/callback]
+          public: true
+        - methods: [GET]
+          paths: [/google/calendar/connect, /google/calendar/status]
+          roles: [ADMIN, MANAGER, TEACHER, USER]
+        - methods: [GET, POST, PUT, DELETE]
+          paths: ["/google/calendar/events", "/google/calendar/events/*"]
+          roles: [ADMIN, MANAGER, TEACHER, USER]
+
+    - prefix: /jitsi
+      target: ${JITSI_SERVICE_URL:http://localhost:8083}
+      rules:
+        - methods: ["*"]
+          paths: ["/jitsi/**"]
+          roles: [ADMIN, MANAGER, TEACHER, USER]
+
     - prefix: /users
       target: ${AUTH_SERVICE_URL:http://localhost:8080}
       rules:
