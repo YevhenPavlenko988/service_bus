@@ -15,6 +15,8 @@ services:
       AUTH_SERVICE_URL: http://auth-service:8080
       GOOGLE_SERVICE_URL: http://google-service:8082
       JITSI_SERVICE_URL: http://jitsi-meet:8083
+      PUSH_SERVICE_URL: http://push-notification:8085
+      LESSONS_SERVICE_URL: http://lessons-service:8086
       JWT_SECRET: local-dev-secret-key-change-in-production-32ch
     networks:
       - saas_network

@@ -5,8 +5,11 @@ gateway:
       target: ${AUTH_SERVICE_URL:http://localhost:8080}
       rules:
         - methods: [POST]
-          paths: [/auth, /auth/password, /auth/change-password]
+          paths: [/auth, /auth/password, /auth/change-password, /auth/refresh, /auth/logout]
           public: true
+        - methods: [POST]
+          paths: [/auth/logout-all]
+          roles: [ADMIN, MANAGER, TEACHER, USER]
         - methods: ["*"]
           paths: [/**]
           roles: [ADMIN, MANAGER, TEACHER, USER]
@@ -24,11 +27,32 @@ gateway:
           paths: ["/google/calendar/events", "/google/calendar/events/*"]
           roles: [ADMIN, MANAGER, TEACHER, USER]
 
+    - prefix: /push
+      target: ${PUSH_SERVICE_URL:http://localhost:8085}
+      rules:
+        - methods: [POST, DELETE]
+          paths: ["/push/token"]
+          roles: [ADMIN, MANAGER, TEACHER, USER]
+
     - prefix: /jitsi
       target: ${JITSI_SERVICE_URL:http://localhost:8083}
       rules:
         - methods: ["*"]
           paths: ["/jitsi/**"]
+          roles: [ADMIN, MANAGER, TEACHER, USER]
+
+    - prefix: /lessons
+      target: ${LESSONS_SERVICE_URL:http://localhost:8086}
+      rules:
+        - methods: ["*"]
+          paths: ["/lessons/**", "/lessons"]
+          roles: [ADMIN, MANAGER, TEACHER, USER]
+
+    - prefix: /sessions
+      target: ${LESSONS_SERVICE_URL:http://localhost:8086}
+      rules:
+        - methods: ["*"]
+          paths: ["/sessions/**", "/sessions"]
           roles: [ADMIN, MANAGER, TEACHER, USER]
 
     - prefix: /users
