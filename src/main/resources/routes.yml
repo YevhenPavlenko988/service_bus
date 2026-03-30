@@ -70,3 +70,6 @@ gateway:
         - methods: [PATCH]
           paths: ["/users/*/assign"]
           roles: [ADMIN]
+        - methods: [PATCH]
+          paths: ["/users/*/role"]
+          roles: [ADMIN]
