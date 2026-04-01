@@ -55,6 +55,22 @@ gateway:
           paths: ["/sessions/**", "/sessions"]
           roles: [ADMIN, MANAGER, TEACHER, USER]
 
+    - prefix: /files
+      target: ${S3_DO_SERVICE_URL:http://localhost:8089}
+      rules:
+        # Upload, list own files, get metadata, quota — teachers and managers only
+        - methods: [POST, GET]
+          paths: ["/files/upload", "/files", "/files/quota"]
+          roles: [ADMIN, MANAGER, TEACHER]
+        # Download and get metadata — all authenticated users (students may receive shared file links)
+        - methods: [GET]
+          paths: ["/files/*", "/files/*/download"]
+          roles: [ADMIN, MANAGER, TEACHER, USER]
+        # Delete — owner checks happen inside the service; gateway allows manager/teacher/admin
+        - methods: [DELETE]
+          paths: ["/files/*"]
+          roles: [ADMIN, MANAGER, TEACHER]
+
     - prefix: /users
       target: ${AUTH_SERVICE_URL:http://localhost:8080}
       rules:

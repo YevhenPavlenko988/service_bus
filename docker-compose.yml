@@ -17,6 +17,7 @@ services:
       JITSI_SERVICE_URL: http://jitsi-meet:8083
       PUSH_SERVICE_URL: http://push-notification:8085
       LESSONS_SERVICE_URL: http://lessons-service:8086
+      S3_DO_SERVICE_URL: http://s3-do-service:8089
       JWT_SECRET: local-dev-secret-key-change-in-production-32ch
     networks:
       - saas_network

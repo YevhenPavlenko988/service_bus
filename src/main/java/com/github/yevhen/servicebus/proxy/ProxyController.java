@@ -3,6 +3,7 @@ package com.github.yevhen.servicebus.proxy;
 import com.github.yevhen.common.exception.ServiceException;
 import com.github.yevhen.servicebus.model.RouteDefinition;
 import com.github.yevhen.servicebus.security.PermissionEvaluator;
+import java.io.IOException;
 import java.net.URI;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
@@ -38,10 +38,7 @@ public class ProxyController {
     }
 
     @RequestMapping(value = "/**")
-    public ResponseEntity<byte[]> proxy(
-            HttpServletRequest request,
-            @RequestBody(required = false) byte[] body
-    ) {
+    public ResponseEntity<byte[]> proxy(HttpServletRequest request) {
         String path = request.getRequestURI();
         String method = request.getMethod();
         String queryString = request.getQueryString();
@@ -55,6 +52,14 @@ public class ProxyController {
         String targetUrl = route.getTarget() + path;
         if (queryString != null && !queryString.isBlank()) {
             targetUrl += "?" + queryString;
+        }
+
+        // Read raw body from input stream (works for JSON, binary, and multipart)
+        byte[] body = null;
+        try {
+            body = request.getInputStream().readAllBytes();
+        } catch (IOException e) {
+            log.warn("Failed to read request body: {}", e.getMessage());
         }
 
         return forward(method, targetUrl, copyRequestHeaders(request), body);
